@@ -504,50 +504,72 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.7);
-                display: none;
+                background-color: rgba(0, 0, 0, 0.85);
+                display: flex;
                 justify-content: center;
                 align-items: center;
-                z-index: 10000;
+                z-index: 99999;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
             }
 
-            .popup-content {
+            .pong-popup-overlay.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .pong-popup-container {
                 background-color: white;
                 padding: 30px;
                 border-radius: 15px;
-                width: 80%;
+                width: 90%;
                 max-width: 600px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                box-shadow: 0 5px 25px rgba(0,0,0,0.5);
                 text-align: center;
                 position: relative;
+                transform: scale(0.9);
+                transition: transform 0.3s ease;
             }
 
-            .close-popup {
+            .pong-popup-overlay.active .pong-popup-container {
+                transform: scale(1);
+            }
+
+            .close-pong-popup {
                 position: absolute;
                 top: 10px;
                 right: 15px;
-                font-size: 24px;
+                font-size: 28px;
                 cursor: pointer;
                 color: #ff6b6b;
+                background: none;
+                border: none;
+                line-height: 1;
             }
-
-            #pongCanvas {
+            #pongGameCanvas {
                 background: #111;
                 border: 4px solid #ff9e4f;
                 border-radius: 8px;
                 margin: 20px auto;
                 display: block;
+                width: 100%;
+                max-width: 500px;
+                height: auto;
+                aspect-ratio: 5/3;
             }
 
-            .game-title {
+            .pong-title {
                 color: #7209b7;
                 font-family: 'Fredoka One', cursive;
-                margin-bottom: 15px;
+                margin-bottom: 10px;
+                font-size: 1.8rem;
             }
 
-            .game-instructions {
-                color: #333;
+            .pong-instructions {
+                color: #555;
                 margin-bottom: 15px;
+                font-size: 1rem;
             }
         }
     </style>
@@ -842,78 +864,115 @@
             membersScroll.scrollLeft = scrollLeft - walk;
         });
     </script> 
-    
-<div class="popup-overlay" id="pongPopup">
-    <div class="popup-content">
-        <span class="close-popup" id="closePong">&times;</span>
-        <h2 class="game-title">ArC Pong Challenge</h2>
-        <p class="game-instructions">Use your mouse to move the paddle up and down</p>
-        <canvas id="pongCanvas" width="500" height="300"></canvas>
+
+<div class="pong-popup-overlay" id="pongPopup">
+    <div class="pong-popup-container">
+        <button class="close-pong-popup" id="closePongPopup">&times;</button>
+        <h2 class="pong-title">ArC Pong Challenge</h2>
+        <p class="pong-instructions">Move your mouse or finger to control the paddle</p>
+        <canvas id="pongGameCanvas"></canvas>
     </div>
 </div>
 
 <script>
-// Wait for DOM to be fully loaded
+// Robust popup and game implementation
 document.addEventListener('DOMContentLoaded', function() {
-    // Get elements
+    // Elements
     const logo = document.querySelector('.logo');
     const popup = document.getElementById('pongPopup');
-    const closeBtn = document.getElementById('closePong');
+    const closeBtn = document.getElementById('closePongPopup');
+    const canvas = document.getElementById('pongGameCanvas');
+    
+    // Set canvas size properly
+    function resizeCanvas() {
+        const maxWidth = Math.min(500, window.innerWidth - 60);
+        canvas.width = maxWidth;
+        canvas.height = maxWidth * 0.6; // 5:3 aspect ratio
+    }
+    
+    // Initialize canvas size
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Game variables
     let gameInterval;
-
-    // Open popup when logo is clicked
+    let isPopupOpen = false;
+    
+    // Open popup function
+    function openPongPopup() {
+        if (isPopupOpen) return;
+        
+        popup.classList.add('active');
+        isPopupOpen = true;
+        startPongGame();
+        
+        // Prevent body scrolling
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Close popup function
+    function closePongPopup() {
+        if (!isPopupOpen) return;
+        
+        popup.classList.remove('active');
+        isPopupOpen = false;
+        clearInterval(gameInterval);
+        
+        // Restore body scrolling
+        document.body.style.overflow = '';
+    }
+    
+    // Event listeners
     if (logo) {
         logo.addEventListener('click', function(e) {
             e.preventDefault();
-            popup.style.display = 'flex';
-            startPongGame();
+            openPongPopup();
         });
     }
-
-    // Close popup when X is clicked
-    closeBtn.addEventListener('click', function() {
-        popup.style.display = 'none';
-        clearInterval(gameInterval);
-    });
-
-    // Close popup when clicking outside content
+    
+    closeBtn.addEventListener('click', closePongPopup);
+    
     popup.addEventListener('click', function(e) {
         if (e.target === popup) {
-            popup.style.display = 'none';
-            clearInterval(gameInterval);
+            closePongPopup();
         }
     });
-
+    
     // Pong Game Implementation
     function startPongGame() {
-        const canvas = document.getElementById('pongCanvas');
-        const ctx = canvas.getContext('2d');
+        // Clear any existing game
+        clearInterval(gameInterval);
         
         // Game elements
+        const ctx = canvas.getContext('2d');
         const ball = {
             x: canvas.width/2,
             y: canvas.height/2,
-            radius: 8,
-            dx: 3,  // Constant speed
-            dy: 3,  // Constant speed
+            radius: Math.max(6, canvas.width * 0.012),
+            dx: 3 * (canvas.width / 500),
+            dy: 3 * (canvas.width / 500),
             color: '#4cc9f0'
         };
         
+        const paddleWidth = Math.max(8, canvas.width * 0.016);
+        const paddleHeight = Math.max(80, canvas.height * 0.25);
+        
         const playerPaddle = {
-            x: canvas.width - 10,
-            y: canvas.height/2 - 50,
-            width: 10,
-            height: 100,
-            color: '#ff9e4f'
+            x: canvas.width - paddleWidth - 5,
+            y: canvas.height/2 - paddleHeight/2,
+            width: paddleWidth,
+            height: paddleHeight,
+            color: '#ff9e4f',
+            dy: 0
         };
         
         const computerPaddle = {
-            x: 0,
-            y: canvas.height/2 - 50,
-            width: 10,
-            height: 100,
+            x: 5,
+            y: canvas.height/2 - paddleHeight/2,
+            width: paddleWidth,
+            height: paddleHeight,
             color: '#7209b7',
-            speed: 3
+            speed: 3 * (canvas.width / 500)
         };
         
         let playerScore = 0;
@@ -934,19 +993,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function drawScore() {
-            ctx.font = "24px 'Fredoka One', cursive";
+            ctx.font = `bold ${Math.max(20, canvas.width * 0.04)}px 'Fredoka One', cursive`;
             ctx.fillStyle = "#ff6b6b";
-            ctx.fillText(computerScore, canvas.width/4, 30);
-            ctx.fillText(playerScore, 3*canvas.width/4, 30);
+            ctx.textAlign = 'center';
+            ctx.fillText(`${computerScore} : ${playerScore}`, canvas.width/2, 30);
         }
         
         function drawNet() {
-            ctx.strokeStyle = "rgba(255,255,255,0.2)";
+            ctx.strokeStyle = "rgba(255,255,255,0.15)";
             ctx.lineWidth = 2;
+            ctx.setLineDash([10, 10]);
             ctx.beginPath();
             ctx.moveTo(canvas.width/2, 0);
             ctx.lineTo(canvas.width/2, canvas.height);
             ctx.stroke();
+            ctx.setLineDash([]);
         }
         
         // Game logic
@@ -972,19 +1033,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if(ball.x - ball.radius < computerPaddle.x + computerPaddle.width && 
                ball.y > computerPaddle.y && 
                ball.y < computerPaddle.y + computerPaddle.height) {
-                ball.dx = -ball.dx;
+                ball.dx = Math.abs(ball.dx); // Ensure ball moves right
             }
             
             if(ball.x + ball.radius > playerPaddle.x && 
                ball.y > playerPaddle.y && 
                ball.y < playerPaddle.y + playerPaddle.height) {
-                ball.dx = -ball.dx;
+                ball.dx = -Math.abs(ball.dx); // Ensure ball moves left
             }
             
             // Simple computer AI
-            if(computerPaddle.y + computerPaddle.height/2 < ball.y) {
+            if(computerPaddle.y + computerPaddle.height/2 < ball.y - 10) {
                 computerPaddle.y += computerPaddle.speed;
-            } else {
+            } else if(computerPaddle.y + computerPaddle.height/2 > ball.y + 10) {
                 computerPaddle.y -= computerPaddle.speed;
             }
             
@@ -1005,27 +1066,42 @@ document.addEventListener('DOMContentLoaded', function() {
         function resetBall() {
             ball.x = canvas.width/2;
             ball.y = canvas.height/2;
-            ball.dx = (Math.random() > 0.5 ? 1 : -1) * 3;
-            ball.dy = (Math.random() * 4 - 2);
+            ball.dx = (Math.random() > 0.5 ? 1 : -1) * 3 * (canvas.width / 500);
+            ball.dy = (Math.random() * 4 - 2) * (canvas.width / 500);
         }
         
-        // Mouse movement
-        canvas.addEventListener('mousemove', function(e) {
+        // Mouse/touch movement
+        function movePaddle(e) {
             const rect = canvas.getBoundingClientRect();
-            playerPaddle.y = e.clientY - rect.top - playerPaddle.height/2;
-        });
+            const pos = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+            playerPaddle.y = pos - rect.top - playerPaddle.height/2;
+        }
         
-        // Touch support for mobile
+        // Event listeners for controls
+        canvas.addEventListener('mousemove', movePaddle);
         canvas.addEventListener('touchmove', function(e) {
             e.preventDefault();
-            const rect = canvas.getBoundingClientRect();
-            playerPaddle.y = e.touches[0].clientY - rect.top - playerPaddle.height/2;
-        });
+            movePaddle(e);
+        }, { passive: false });
         
         // Start game loop
-        clearInterval(gameInterval); // Clear any existing game loop
+        resetBall();
         gameInterval = setInterval(update, 1000/60);
     }
+    
+    // Cleanup when popup closes
+    popup.addEventListener('transitionend', function(e) {
+        if (!popup.classList.contains('active') && isPopupOpen) {
+            isPopupOpen = false;
+            clearInterval(gameInterval);
+            
+            // Remove event listeners
+            const canvas = document.getElementById('pongGameCanvas');
+            if (canvas) {
+                canvas.replaceWith(canvas.cloneNode(true));
+            }
+        }
+    });
 });
 </script>
 </body>
