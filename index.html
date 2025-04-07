@@ -841,7 +841,18 @@
             const walk = (x - startX) * 2;
             membersScroll.scrollLeft = scrollLeft - walk;
         });
-    </script>
+    </script> 
+<!-- Add this HTML before </body> (properly indented) -->
+<div class="game-popup" id="gamePopup">
+    <div class="game-container">
+        <button class="close-game" id="closeGame">×</button>
+        <h3 class="game-title">ArC Pong!</h3>
+        <canvas id="pongCanvas" width="600" height="400"></canvas>
+    </div>
+</div>
+
+<!-- Add this JavaScript before </body> (properly indented) -->
+<script>
     // Pong Game
     document.querySelector('.logo').addEventListener('click', function() {
         document.getElementById('gamePopup').style.display = 'flex';
@@ -851,11 +862,11 @@
     document.getElementById('closeGame').addEventListener('click', function() {
         document.getElementById('gamePopup').style.display = 'none';
     });
-    
+
     function initPongGame() {
         const canvas = document.getElementById('pongCanvas');
         const ctx = canvas.getContext('2d');
-    
+        
         // Game elements
         const ball = {
             x: canvas.width / 2,
@@ -865,7 +876,7 @@
             dy: 4,
             color: '#4cc9f0'
         };
-    
+        
         const paddle = {
             width: 15,
             height: 100,
@@ -875,7 +886,7 @@
             dy: 8,
             score: 0
         };
-    
+        
         const aiPaddle = {
             width: 15,
             height: 100,
@@ -885,7 +896,7 @@
             dy: 4,
             score: 0
         };
-    
+        
         // Draw functions
         function drawBall() {
             ctx.beginPath();
@@ -894,7 +905,7 @@
             ctx.fill();
             ctx.closePath();
         }
-    
+        
         function drawPaddle(p) {
             ctx.beginPath();
             ctx.rect(p.x, p.y, p.width, p.height);
@@ -902,14 +913,14 @@
             ctx.fill();
             ctx.closePath();
         }
-    
+        
         function drawScore() {
             ctx.font = '32px Fredoka One';
             ctx.fillStyle = '#ff6b6b';
             ctx.fillText(aiPaddle.score, canvas.width / 4, 50);
             ctx.fillText(paddle.score, 3 * canvas.width / 4, 50);
         }
-    
+        
         function drawNet() {
             for (let i = 0; i < canvas.height; i += 20) {
                 ctx.beginPath();
@@ -919,28 +930,28 @@
                 ctx.closePath();
             }
         }
-    
+        
         // Game logic
         function update() {
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+            
             // Draw elements
             drawNet();
             drawBall();
             drawPaddle(paddle);
             drawPaddle(aiPaddle);
             drawScore();
-        
+            
             // Move ball
             ball.x += ball.dx;
             ball.y += ball.dy;
-        
+            
             // Wall collision (top/bottom)
             if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
                 ball.dy = -ball.dy;
             }
-        
+            
             // Paddle collision
             if (
                 ball.x - ball.radius < aiPaddle.x + aiPaddle.width &&
@@ -950,7 +961,7 @@
                 ball.dx = -ball.dx * 1.05; // Speed up slightly
                 ball.x = aiPaddle.x + aiPaddle.width + ball.radius;
             }
-        
+            
             if (
                 ball.x + ball.radius > paddle.x &&
                 ball.y > paddle.y &&
@@ -959,20 +970,20 @@
                 ball.dx = -ball.dx * 1.05; // Speed up slightly
                 ball.x = paddle.x - ball.radius;
             }
-        
+            
             // AI paddle movement
             if (aiPaddle.y + aiPaddle.height / 2 < ball.y - 10) {
                 aiPaddle.y += aiPaddle.dy;
             } else if (aiPaddle.y + aiPaddle.height / 2 > ball.y + 10) {
                 aiPaddle.y -= aiPaddle.dy;
             }
-        
+            
             // Keep AI paddle in canvas
             if (aiPaddle.y < 0) aiPaddle.y = 0;
             if (aiPaddle.y + aiPaddle.height > canvas.height) {
                 aiPaddle.y = canvas.height - aiPaddle.height;
             }
-        
+            
             // Scoring
             if (ball.x + ball.radius < 0) {
                 paddle.score++;
@@ -982,55 +993,47 @@
                 resetBall();
             }
         }
-    
+        
         function resetBall() {
             ball.x = canvas.width / 2;
             ball.y = canvas.height / 2;
             ball.dx = -ball.dx;
             ball.dy = Math.random() * 8 - 4;
         }
-    
+        
         // Mouse movement for player paddle
         canvas.addEventListener('mousemove', function(e) {
             const rect = canvas.getBoundingClientRect();
             paddle.y = e.clientY - rect.top - paddle.height / 2;
-        
+            
             // Keep paddle in canvas
             if (paddle.y < 0) paddle.y = 0;
             if (paddle.y + paddle.height > canvas.height) {
                 paddle.y = canvas.height - paddle.height;
             }
         });
-    
+        
         // Touch support for mobile
         canvas.addEventListener('touchmove', function(e) {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             paddle.y = e.touches[0].clientY - rect.top - paddle.height / 2;
-        
+            
             // Keep paddle in canvas
             if (paddle.y < 0) paddle.y = 0;
             if (paddle.y + paddle.height > canvas.height) {
                 paddle.y = canvas.height - paddle.height;
             }
         });
-    
+        
         // Game loop
         const gameInterval = setInterval(update, 1000 / 60);
-    
+        
         // Clear interval when popup closes
         document.getElementById('closeGame').addEventListener('click', function() {
             clearInterval(gameInterval);
         });
     }
-                
-<!-- Pong Game Popup -->
-<div class="game-popup" id="gamePopup">
-    <div class="game-container">
-        <button class="close-game" id="closeGame">×</button>
-        <h3 class="game-title">ArC Pong!</h3>
-        <canvas id="pongCanvas" width="600" height="400"></canvas>
-    </div>
-</div>           
+</script>
 </body>
 </html>
