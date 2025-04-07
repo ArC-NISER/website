@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arts Club NISER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-image: url('images/logo/peakpx.jpg');
+            background-repeat: repeat;
+            font-family: 'Comic Neue', cursive;
+            background-color: #fff9f0;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: url('images/brush.cur') 16 16, auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        section {
+            padding: 60px 0;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ff6b6b;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #ff9e4f;
+            text-shadow: 3px 3px 0 #ffd166;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            color: #4cc9f0;
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+            color: #7209b7;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 9999;
+            overflow: hidden;
+            animation: fadeOut 0.5s 2.5s forwards;
+        }
+                
+                .rainbow-container {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+        }
+
+        .rainbow-strip {
+            position: absolute;
+            width: 300%;
+            height: calc(100% / 7);
+            transform-origin: left center;
+            animation: slideDiagonal 2s linear infinite;
+            opacity: 0.9;
+        }
+
+        /* Rainbow colors with individual animations */
+        .rainbow-strip:nth-child(1) { 
+            background: #FF0000; /* Red */
+            top: 0;
+            animation-delay: 0.1s;
+        }
+        .rainbow-strip:nth-child(2) { 
+            background: #FF7F00; /* Orange */
+            top: calc(100% / 7);
+            animation-delay: 0.2s;
+        }
+        .rainbow-strip:nth-child(3) { 
+            background: #FFFF00; /* Yellow */
+            top: calc(100% * 2 / 7);
+            animation-delay: 0.3s;
+        }
+        .rainbow-strip:nth-child(4) { 
+            background: #00FF00; /* Green */
+            top: calc(100% * 3 / 7);
+            animation-delay: 0.4s;
+        }
+        .rainbow-strip:nth-child(5) { 
+            background: #0000FF; /* Blue */
+            top: calc(100% * 4 / 7);
+            animation-delay: 0.5s;
+        }
+        .rainbow-strip:nth-child(6) { 
+            background: #4B0082; /* Indigo */
+            top: calc(100% * 5 / 7);
+            animation-delay: 0.6s;
+        }
+        .rainbow-strip:nth-child(7) { 
+            background: #9400D3; /* Violet */
+            top: calc(100% * 6 / 7);
+            animation-delay: 0.7s;
+        }
+
+        @keyframes slideDiagonal {
+            0% { 
+                transform: translateX(-100%) rotate(25deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.9;
+            }
+            80% {
+                opacity: 0.9;
+            }
+            100% { 
+                transform: translateX(100%) rotate(25deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #ffd166;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            color: #7209b7;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background-color: #ff9e4f;
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #ff9e4f, #ff6b6b, #7209b7);
+            padding: 150px 0 100px;
+            text-align: center;
+            color: white;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: -50px;
+        }
+        
+        .hero h1 {
+            color: white;
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+            font-size: 4rem;
+            margin-bottom: 30px;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        /* Bulletin Board Section */
+        .bulletin-board {
+            background-color: #e2f3f8;
+            border: 15px solid #c9cbff;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .bulletin-board:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px dashed #ff9e4f;
+            border-radius: 5px;
+            pointer-events: none;
+        }
+        
+        .bulletin-board h2 {
+            color: #ff6b6b;
+            margin-bottom: 30px;
+            text-decoration: underline wavy #4cc9f0;
+        }
+        
+        .bulletin-item {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #7209b7;
+        }
+        
+        .bulletin-item h3 {
+            color: #4cc9f0;
+            margin-bottom: 10px;
+        }
+        
+        /* Event Section */
+        .next-event {
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 3px dotted #ff9e4f;
+        }
+        
+        .event {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .event-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .event-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .event-image img {
+            width: 100%;
+            transition: transform 0.5s;
+        }
+        
+        .event-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Members Section */
+        .members-section {
+            background-color: #f0f7ff;
+            padding: 60px 0;
+        }
+        
+        .members-container {
+            position: relative;
+        }
+        
+        .members-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 30px;
+            padding: 30px 0;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .members-scroll::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+        
+        .member-card {
+            flex: 0 0 280px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            scroll-snap-align: start;
+            transition: transform 0.3s;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .member-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        
+        .member-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.5rem;
+            color: #7209b7;
+        }
+        
+        .scroll-left {
+            left: -25px;
+        }
+        
+        .scroll-right {
+            right: -25px;
+        }
+        
+        /* Gallery Section */
+        .gallery {
+            text-align: center;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .gallery-info {
+            padding: 15px;
+        }
+        
+        .artist-name {
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-top: 10px;
+        }
+        
+        /* Gallery Button */
+        .gallery-btn {
+            display: inline-block;
+            margin: 40px auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff9e4f, #ff6b6b);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(255,105,107,0.4);
+            transition: all 0.3s;
+        }
+        
+        .gallery-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255,105,107,0.6);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #7209b7;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+            margin-top: 60px;
+        }
+        
+        .social-links {
+            margin-top: 30px;
+        }
+        
+        .social-links a {
+            color: white;
+            margin: 0 15px;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .social-links a:hover {
+            transform: scale(1.2) rotate(10deg);
+            color: #ffd166;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .hero {
+                padding: 120px 0 80px;
+            }
+            
+            .event {
+                flex-direction: column;
+            }
+            
+            .event-info, .event-image {
+                min-width: 100%;
+            }
+            
+            .scroll-arrow {
+                display: none;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Rainbow Loader -->
+<div class="loader">
+    <div class="rainbow-container">
+        <div class="rainbow-strip"></div>
+        <div class="rainbow-strip"></div>
+        <div class="rainbow-strip"></div>
+        <div class="rainbow-strip"></div>
+        <div class="rainbow-strip"></div>
+        <div class="rainbow-strip"></div>
+        <div class="rainbow-strip"></div>
+    </div>
+</div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>NISER Arts Club</h1>
+            <p>'cause everyone needs colour in their lives.</p>
+        </div>
+    </section>
+
+    <!-- Bulletin Board Section -->
+    <section class="bulletin-board" id="bulletin">
+        <div class="container">
+            <h2>Club Bulletin</h2>
+            
+            <div class="bulletin-item">
+                <h3>Upcoming Form</h3>
+                <p>Google form for art submission.</p>
+                <p><strong>When:</strong> Coming soon...</p>
+            </div>
+            
+            <div class="bulletin-item">
+                <h3>Merch</h3>
+                <p><strong>When:</strong> Coming soon...</p>
+            </div>
+            
+            <div class="bulletin-item">
+                <h3>Offline meetup</h3>
+                <p><strong>When:</strong> Coming soon...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Next Event Section -->
+    <section class="next-event">
+        <div class="container">
+            <h2>Next Big Event</h2>
+            <div class="event">
+                <div class="event-info">
+                    <h3>Doodle it out ~</h3>
+                    <p>Got 2–5 minutes to spare? Let your imagination fly with a fun little challenge from ARC.</p>
+                    <p><strong>What’s the plan?</strong></p>
+                    <p>Nada! Draw anything your heart desires, think less, draw more.</p>
+                    <p>📧 Mail your creation to us in this mail thread only. (Do not reply all)</p>
+                    <p><strong>Deadline:</strong> 13th April 2025 Sunday, 11.59 pm.</p>
+                    <p><strong>Just remember to keep the art PG-13, please.</strong></p>
+                </div>
+                <div class="event-image">
+                    <img src="images/logo/doodle.jpeg" alt="Community Mural Project">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet the Members Section -->
+    <section class="members-section" id="members">
+        <div class="container">
+            <h2>Meet the Crew</h2>
+            <div class="members-container">
+                <div class="members-scroll" id="membersScroll">
+                    <!-- Member 1 -->
+                    <div class="member-card">
+                        <img src="images/members/vp.jpg" alt="Sarah" class="member-image">
+                        <div class="member-info">
+                            <h3>Vaishnavi Kamalesh Pawar</h3>
+                            <p>President</p>
+                            <p>Batch '23</p>
+                            <a href="https://www.instagram.com/vaish9vi.kp/">📷 Instagram</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Member 2 -->
+                    <div class="member-card">
+                        <img src="images/members/vn.jpg" alt="Mike" class="member-image">
+                        <div class="member-info">
+                            <h3>Vyom Neeraj</h3>
+                            <p>Vice President</p>
+                            <p>Batch '23</p>
+                            <a href="https://www.instagram.com/vyomneeraj/">📷 Instagram</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Member 3 -->
+                    <div class="member-card">
+                        <img src="images/members/ks.jpg" alt="Emily" class="member-image">
+                        <div class="member-info">
+                            <h3>Kaustav Sarkar</h3>
+                            <p>Social Media Manager</p>
+                            <p>Batch '23</p>
+                            <a href="https://www.instagram.com/kaustavsarkar1199/">📷 Instagram</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Member 4 -->
+                    <div class="member-card">
+                        <img src="images/members/mm.jpg" alt="David" class="member-image">
+                        <div class="member-info">
+                            <h3>Mrityunjoy Medhi</h3>
+                            <p>Event Manager</p>
+                            <p>Batch '23</p>
+                            <a href="https://www.instagram.com/i_draw_foreveryone/">📷 Instagram</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Member 5 -->
+                    <div class="member-card">
+                        <img src="images/members/dk.jpg" alt="Jessica" class="member-image">
+                        <div class="member-info">
+                            <h3>Deepasha Kumari</h3>
+                            <p>Event Manager</p>
+                            <p>Batch '23</p>
+                            <a href="https://www.instagram.com/niser_arts_club/">📷 Instagram</a>
+                        </div>
+                    </div>
+
+                    <!-- Member 6 -->
+                    <div class="member-card">
+                        <img src="images/members/pr.jpg" alt="Jessica" class="member-image">
+                        <div class="member-info">
+                            <h3>Piyush Ranjan</h3>
+                            <p>Social Media Manager</p>
+                            <p>Batch '23</p>
+                            <a href="https://www.instagram.com/the_one_p.r/">📷 Instagram</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Member 7 -->
+                    <div class="member-card">
+                        <img src="images/members/a.jpg" alt="Alex" class="member-image">
+                        <div class="member-info">
+                            <h3>Aitrila Saha</h3>
+                            <p>Outreach Coordinator</p>
+                            <p>Batch '24</p>
+                            <a href="https://www.instagram.com/niser_arts_club/">📷 Instagram</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll-arrow scroll-left" onclick="scrollMembers(-1)">←</div>
+                <div class="scroll-arrow scroll-right" onclick="scrollMembers(1)">→</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pictures of the Week -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <h2>This Week's Drops</h2>
+            <p>Check out what our members have been working on!</p>
+            
+            <div class="gallery-grid">
+                <!-- Artwork 1 -->
+                <div class="gallery-item">
+                    <img src="images/art/ele.jpg" alt="Sunset Dreams">
+                    <div class="gallery-info">
+                        <p>"Kimbhoot" - Pencil Sketch</p>
+                        <div class="artist-name">By: Kaustav Sarkar</div>
+                    </div>
+                </div>
+                
+                <!-- Artwork 2 -->
+                <div class="gallery-item">
+                    <img src="images/art/wolf.jpg" alt="City Lights">
+                    <div class="gallery-info">
+                        <p>"Wolf Link" - Digital Art</p>
+                        <div class="artist-name">By: Kaustav Sarkar</div>
+                    </div>
+                </div>
+                
+                <!-- Artwork 3 -->
+                <div class="gallery-item">
+                    <img src="images/art/kammam.jpg" alt="Floral Patterns">
+                    <div class="gallery-info">
+                        <p>"Omlet Large" - Pencil Sketch</p>
+                        <div class="artist-name">By: Mrityunjoy Medhi</div>
+                    </div>
+                </div>
+                
+                <!-- Artwork 4 -->
+                <div class="gallery-item">
+                    <img src="images/art/mm.jpg" alt="Abstract Composition">
+                    <div class="gallery-info">
+                        <p>"Majora's Mask" - Mesh</p>
+                        <div class="artist-name">By: Kaustav Sarkar</div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="gallery.html" class="gallery-btn">View Full Gallery</a>
+        </div>
+    </section>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">ArC</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#bulletin">Bulletin</a></li>
+                    <li><a href="index.html#members">Core</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <p>Ready to join the fun or have questions?</p>
+            <div class="social-links">
+                <a href="mailto:arc@niser.ac.in">✉️ Email Us</a>
+                <a href="https://www.instagram.com/niser_arts_club/">📷 Instagram</a>
+            </div>
+            <p>&copy; 2025 Arts Club (ArC). All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Loading animation will automatically disappear after 2.5 seconds
+        
+        // Members section scrolling
+        function scrollMembers(direction) {
+            const scrollContainer = document.getElementById('membersScroll');
+            scrollContainer.scrollBy({
+                left: direction * 300,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Make member cards draggable for scrolling on desktop
+        const membersScroll = document.getElementById('membersScroll');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        
+        membersScroll.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - membersScroll.offsetLeft;
+            scrollLeft = membersScroll.scrollLeft;
+        });
+        
+        membersScroll.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+        
+        membersScroll.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+        
+        membersScroll.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - membersScroll.offsetLeft;
+            const walk = (x - startX) * 2;
+            membersScroll.scrollLeft = scrollLeft - walk;
+        });
+        
+        // Touch support for mobile
+        membersScroll.addEventListener('touchstart', (e) => {
+            isDown = true;
+            startX = e.touches[0].pageX - membersScroll.offsetLeft;
+            scrollLeft = membersScroll.scrollLeft;
+        });
+        
+        membersScroll.addEventListener('touchend', () => {
+            isDown = false;
+        });
+        
+        membersScroll.addEventListener('touchmove', (e) => {
+            if(!isDown) return;
+            const x = e.touches[0].pageX - membersScroll.offsetLeft;
+            const walk = (x - startX) * 2;
+            membersScroll.scrollLeft = scrollLeft - walk;
+        });
+    </script>
+</body>
+</html>
