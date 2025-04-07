@@ -497,6 +497,58 @@
             .nav-links {
                 display: none;
             }
+            /* Pong Game Popup Styles */
+            .game-popup {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+            }
+
+            .game-container {
+                background-color: white;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+                position: relative;
+            }
+
+            #pongCanvas {
+                background: #111;
+                border: 4px solid #ff9e4f;
+                border-radius: 8px;
+            }
+
+            .close-game {
+                position: absolute;
+                top: -15px;
+                right: -15px;
+                width: 40px;
+                height: 40px;
+                background: #ff6b6b;
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.5rem;
+                cursor: pointer;
+                border: none;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            }
+
+            .game-title {
+                text-align: center;
+                color: #7209b7;
+                margin-bottom: 15px;
+                font-family: 'Fredoka One', cursive;
+            }
         }
     </style>
 </head>
@@ -790,5 +842,195 @@
             membersScroll.scrollLeft = scrollLeft - walk;
         });
     </script>
+    // Pong Game
+    document.querySelector('.logo').addEventListener('click', function() {
+        document.getElementById('gamePopup').style.display = 'flex';
+        initPongGame();
+    });
+
+    document.getElementById('closeGame').addEventListener('click', function() {
+        document.getElementById('gamePopup').style.display = 'none';
+    });
+    
+    function initPongGame() {
+        const canvas = document.getElementById('pongCanvas');
+        const ctx = canvas.getContext('2d');
+    
+        // Game elements
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 10,
+            dx: 4,
+            dy: 4,
+            color: '#4cc9f0'
+        };
+    
+        const paddle = {
+            width: 15,
+            height: 100,
+            x: canvas.width - 20,
+            y: canvas.height / 2 - 50,
+            color: '#ff9e4f',
+            dy: 8,
+            score: 0
+        };
+    
+        const aiPaddle = {
+            width: 15,
+            height: 100,
+            x: 5,
+            y: canvas.height / 2 - 50,
+            color: '#7209b7',
+            dy: 4,
+            score: 0
+        };
+    
+        // Draw functions
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+    
+        function drawPaddle(p) {
+            ctx.beginPath();
+            ctx.rect(p.x, p.y, p.width, p.height);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+    
+        function drawScore() {
+            ctx.font = '32px Fredoka One';
+            ctx.fillStyle = '#ff6b6b';
+            ctx.fillText(aiPaddle.score, canvas.width / 4, 50);
+            ctx.fillText(paddle.score, 3 * canvas.width / 4, 50);
+        }
+    
+        function drawNet() {
+            for (let i = 0; i < canvas.height; i += 20) {
+                ctx.beginPath();
+                ctx.rect(canvas.width / 2 - 1, i, 2, 10);
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    
+        // Game logic
+        function update() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+            // Draw elements
+            drawNet();
+            drawBall();
+            drawPaddle(paddle);
+            drawPaddle(aiPaddle);
+            drawScore();
+        
+            // Move ball
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+        
+            // Wall collision (top/bottom)
+            if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                ball.dy = -ball.dy;
+            }
+        
+            // Paddle collision
+            if (
+                ball.x - ball.radius < aiPaddle.x + aiPaddle.width &&
+                ball.y > aiPaddle.y &&
+                ball.y < aiPaddle.y + aiPaddle.height
+            ) {
+                ball.dx = -ball.dx * 1.05; // Speed up slightly
+                ball.x = aiPaddle.x + aiPaddle.width + ball.radius;
+            }
+        
+            if (
+                ball.x + ball.radius > paddle.x &&
+                ball.y > paddle.y &&
+                ball.y < paddle.y + paddle.height
+            ) {
+                ball.dx = -ball.dx * 1.05; // Speed up slightly
+                ball.x = paddle.x - ball.radius;
+            }
+        
+            // AI paddle movement
+            if (aiPaddle.y + aiPaddle.height / 2 < ball.y - 10) {
+                aiPaddle.y += aiPaddle.dy;
+            } else if (aiPaddle.y + aiPaddle.height / 2 > ball.y + 10) {
+                aiPaddle.y -= aiPaddle.dy;
+            }
+        
+            // Keep AI paddle in canvas
+            if (aiPaddle.y < 0) aiPaddle.y = 0;
+            if (aiPaddle.y + aiPaddle.height > canvas.height) {
+                aiPaddle.y = canvas.height - aiPaddle.height;
+            }
+        
+            // Scoring
+            if (ball.x + ball.radius < 0) {
+                paddle.score++;
+                resetBall();
+            } else if (ball.x - ball.radius > canvas.width) {
+                aiPaddle.score++;
+                resetBall();
+            }
+        }
+    
+        function resetBall() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.dx = -ball.dx;
+            ball.dy = Math.random() * 8 - 4;
+        }
+    
+        // Mouse movement for player paddle
+        canvas.addEventListener('mousemove', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            paddle.y = e.clientY - rect.top - paddle.height / 2;
+        
+            // Keep paddle in canvas
+            if (paddle.y < 0) paddle.y = 0;
+            if (paddle.y + paddle.height > canvas.height) {
+                paddle.y = canvas.height - paddle.height;
+            }
+        });
+    
+        // Touch support for mobile
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            paddle.y = e.touches[0].clientY - rect.top - paddle.height / 2;
+        
+            // Keep paddle in canvas
+            if (paddle.y < 0) paddle.y = 0;
+            if (paddle.y + paddle.height > canvas.height) {
+                paddle.y = canvas.height - paddle.height;
+            }
+        });
+    
+        // Game loop
+        const gameInterval = setInterval(update, 1000 / 60);
+    
+        // Clear interval when popup closes
+        document.getElementById('closeGame').addEventListener('click', function() {
+            clearInterval(gameInterval);
+        });
+    }
+                
+<!-- Pong Game Popup -->
+<div class="game-popup" id="gamePopup">
+    <div class="game-container">
+        <button class="close-game" id="closeGame">×</button>
+        <h3 class="game-title">ArC Pong!</h3>
+        <canvas id="pongCanvas" width="600" height="400"></canvas>
+    </div>
+</div>           
 </body>
 </html>
