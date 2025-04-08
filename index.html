@@ -658,7 +658,7 @@
     </section>
 
     <!-- Pictures of the Week -->
-    <section class="gallery" id="gallery" ondblclick="window.location.href='tetris.html'">
+    <section class="gallery" id="gallery">
         <div class="container">
             <h2>This Week's Drops</h2>
             <p>Check out what our members have been working on!</p>
@@ -667,7 +667,7 @@
                 <!-- Artwork 1 -->
                 <div class="gallery-item">
                     <img src="images/art/ele.jpg" alt="Sunset Dreams">
-                    <div class="gallery-info">
+                    <div class="gallery-info" ondblclick="window.location.href='tetris.html'">
                         <p>"Kimbhoot" - Pencil Sketch</p>
                         <div class="artist-name">By: Kaustav Sarkar</div>
                     </div>
@@ -808,11 +808,11 @@
         window.location.href = 'https://games.htmlgames.com/DonkeyKong/';
 
     // Kaustav's card double-click handler
-    document.querySelectorAll('.member-card')[2].addEventListener('dblclick', function() {
-        window.location.href = 'breakouy.html';
+    document.querySelectorAll('.gallery-info')[3].addEventListener('dblclick', function() {
+        window.location.href = 'breakout.html';
 
     // Kaustav's card double-click handler
-    document.querySelectorAll('.member-card')[2].addEventListener('dblclick', function() {
+    document.querySelectorAll('.gallery-info')[1].addEventListener('dblclick', function() {
         window.location.href = 'tetris.html';
 </script>
 </body>
