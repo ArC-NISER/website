@@ -137,6 +137,7 @@
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             border: 1px solid #333344;
+            cursor: pointer;
         }
         
         .gallery-item:hover {
@@ -160,6 +161,91 @@
             font-weight: bold;
             color: #ff00ff;
             margin-top: 10px;
+        }
+        
+        /* Lightbox Preview Styles */
+        .preview-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .preview-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .preview-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        .preview-info {
+            color: white;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(26, 26, 42, 0.8);
+            border-radius: 4px;
+        }
+        
+        .close-preview {
+            position: absolute;
+            top: -40px;
+            right: -10px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+        
+        .close-preview:hover {
+            color: #ff00ff;
+        }
+        
+        .nav-preview {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+        
+        .prev-btn {
+            left: 20px;
+        }
+        
+        .next-btn {
+            right: 20px;
+        }
+        
+        .nav-preview:hover {
+            color: #ff00ff;
         }
         
         /* Footer */
@@ -210,29 +296,19 @@
             .logo {
                 font-size: 1.2rem;
             }
-
-            .thumbnail {
-                width: 100px;
-                height: 100px;
-                object-fit: cover;
-                cursor: pointer;
-                margin: 5px;
+            
+            .preview-container {
+                max-width: 95%;
             }
-            #preview {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.8);
-                text-align: center;
-                z-index: 1000;
+            
+            .nav-preview {
+                font-size: 1.5rem;
             }
-            #preview img {
-                max-width: 80%;
-                max-height: 80%;
-                margin-top: 5%;
+            
+            .close-preview {
+                top: -30px;
+                right: 0;
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -263,7 +339,7 @@
             
             <div class="gallery-grid">
                 <!-- Gallery Item 1 -->
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPreview('images/art/ele.jpg', '&quot;Kimbhut&quot; - Pencil Sketch', 'By: Kaustav Sarkar')">
                     <img src="images/art/ele.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Kimbhut" - Pencil Sketch</p>
@@ -272,7 +348,7 @@
                 </div>
                 
                 <!-- Gallery Item 2 -->
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPreview('images/art/mm.jpg', '&quot;Majora&#39;s Mask&quot; - Mesh', 'By: Kaustav Sarkar')">
                     <img src="images/art/mm.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Majora's Mask" - Mesh</p>
@@ -281,7 +357,7 @@
                 </div>
                 
                 <!-- Gallery Item 3 -->
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPreview('images/art/wolf.jpg', '&quot;Wolf Link&quot; - Digital Art', 'By: Kaustav Sarkar')">
                     <img src="images/art/wolf.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Wolf Link" - Digital Art</p>
@@ -290,7 +366,7 @@
                 </div>
 
                 <!-- Gallery Item 4 -->
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPreview('images/art/ww.jpg', '&quot;Windwaker Link&quot; - Paper Craft', 'By: Kaustav Sarkar')">
                     <img src="images/art/ww.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Windwaker Link" - Paper Craft</p>
@@ -299,7 +375,7 @@
                 </div>
 
                 <!-- Gallery Item 5 -->
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPreview('images/art/kammam.jpg', '&quot;Omlet Large&quot; - Pencil Sketch', 'By: Mrityunjoy Medhi')">
                     <img src="images/art/kammam.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Omlet Large" - Pencil Sketch</p>
@@ -307,7 +383,7 @@
                     </div>
                 </div>
                 <!-- Gallery Item 6 -->
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPreview('images/art/cll.jpg', 'Calligraphy', 'By: Vaishnavi Kamalesh Pawar')">
                     <img src="images/art/cll.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>Calligraphy</p>
@@ -315,8 +391,8 @@
                     </div>
                 </div>     
 
-                                <!-- Gallery Item 7 -->
-                <div class="gallery-item">
+                <!-- Gallery Item 7 -->
+                <div class="gallery-item" onclick="openPreview('images/art/sa.jpg', '&quot;Kamaji&quot; - Pencil Sketch', 'By: Mrityunjoy Medhi')">
                     <img src="images/art/sa.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Kamaji" - Pencil Sketch</p>
@@ -324,8 +400,8 @@
                     </div>
                 </div>
 
-                                <!-- Gallery Item 8 -->
-                <div class="gallery-item">
+                <!-- Gallery Item 8 -->
+                <div class="gallery-item" onclick="openPreview('images/art/im.jpg', '&quot;Iron Man&quot; - Pencil Sketch', 'By: Mrityunjoy Medhi')">
                     <img src="images/art/im.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Iron Man" - Pencil Sketch</p>
@@ -333,8 +409,8 @@
                     </div>
                 </div>
 
-                                <!-- Gallery Item 9 -->
-                <div class="gallery-item">
+                <!-- Gallery Item 9 -->
+                <div class="gallery-item" onclick="openPreview('images/art/ema.jpg', '&quot;When they were Young.&quot; - Pencil Sketch', 'By: Mrityunjoy Medhi')">
                     <img src="images/art/ema.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"When they were Young." - Pencil Sketch</p>
@@ -342,8 +418,8 @@
                     </div>
                 </div>
 
-                                <!-- Gallery Item 10 -->
-                <div class="gallery-item">
+                <!-- Gallery Item 10 -->
+                <div class="gallery-item" onclick="openPreview('images/art/dw.jpg', '&quot;Deadpool &amp; Wolverine&quot; - Pencil Sketch', 'By: Mrityunjoy Medhi')">
                     <img src="images/art/dw.jpg" alt="Artwork">
                     <div class="gallery-info">
                         <p>"Deadpool & Wolverine" - Pencil Sketch</p>
@@ -353,6 +429,20 @@
             </div>
         </div>
     </section>
+
+    <!-- Lightbox Preview -->
+    <div class="preview-overlay" id="previewOverlay">
+        <button class="nav-preview prev-btn" onclick="navigatePreview(-1)">❮</button>
+        <div class="preview-container">
+            <button class="close-preview" onclick="closePreview()">×</button>
+            <img class="preview-image" id="previewImage" src="" alt="Preview">
+            <div class="preview-info">
+                <p id="previewTitle"></p>
+                <p id="previewArtist"></p>
+            </div>
+        </div>
+        <button class="nav-preview next-btn" onclick="navigatePreview(1)">❯</button>
+    </div>
 
     <!-- Footer -->
     <footer id="contact">
@@ -367,20 +457,87 @@
         </div>
     </footer>
     
-    <!-- Preview container -->
-    <div id="preview" onclick="closePreview()">
-        <img id="previewImage" src="">
-    </div>
-    
     <script>
-        function previewImage(src) {
-            document.getElementById('previewImage').src = src;
-            document.getElementById('preview').style.display = 'block';
+        // Store all gallery items for navigation
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        let currentIndex = 0;
+        
+        function openPreview(src, title, artist, index) {
+            const previewOverlay = document.getElementById('previewOverlay');
+            const previewImage = document.getElementById('previewImage');
+            const previewTitle = document.getElementById('previewTitle');
+            const previewArtist = document.getElementById('previewArtist');
+            
+            previewImage.src = src;
+            previewTitle.textContent = title;
+            previewArtist.textContent = artist;
+            
+            // Set current index if provided
+            if (typeof index !== 'undefined') {
+                currentIndex = index;
+            } else {
+                // Find the index if not provided
+                galleryItems.forEach((item, i) => {
+                    if (item.getAttribute('onclick').includes(src)) {
+                        currentIndex = i;
+                    }
+                });
+            }
+            
+            previewOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when preview is open
         }
         
         function closePreview() {
-            document.getElementById('preview').style.display = 'none';
+            const previewOverlay = document.getElementById('previewOverlay');
+            previewOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Re-enable scrolling
         }
+        
+        function navigatePreview(direction) {
+            currentIndex += direction;
+            
+            // Wrap around if at the beginning or end
+            if (currentIndex < 0) {
+                currentIndex = galleryItems.length - 1;
+            } else if (currentIndex >= galleryItems.length) {
+                currentIndex = 0;
+            }
+            
+            // Get the clicked item's attributes
+            const item = galleryItems[currentIndex];
+            const onclickAttr = item.getAttribute('onclick');
+            
+            // Extract parameters from onclick attribute
+            const params = onclickAttr.match(/openPreview\((.*?)\)/)[1].split(', ');
+            const src = params[0].replace(/'/g, '');
+            const title = params[1].replace(/'/g, '');
+            const artist = params[2].replace(/'/g, '');
+            
+            // Open preview with new item
+            openPreview(src, title, artist, currentIndex);
+        }
+        
+        // Close preview when clicking outside the image
+        document.getElementById('previewOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePreview();
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const previewOverlay = document.getElementById('previewOverlay');
+            if (previewOverlay.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closePreview();
+                } else if (e.key === 'ArrowLeft') {
+                    navigatePreview(-1);
+                } else if (e.key === 'ArrowRight') {
+                    navigatePreview(1);
+                }
+            }
+        });
     </script>
 </body>
 </html>
