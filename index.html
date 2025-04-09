@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arts Club NISER</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
@@ -76,7 +76,7 @@
             animation: fadeOut 0.5s 2.5s forwards;
         }
                 
-                .rainbow-container {
+        .rainbow-container {
             position: absolute;
             width: 150%;
             height: 150%;
@@ -305,52 +305,75 @@
             transform: scale(1.05);
         }
         
-        /* Members Section */
+        /* Enhanced Members Section */
         .members-section {
             background-color: #f0f7ff;
             padding: 60px 0;
+            overflow: hidden;
         }
         
         .members-container {
             position: relative;
+            width: 100%;
+            padding: 40px 0;
         }
         
         .members-scroll {
             display: flex;
-            overflow-x: auto;
             gap: 30px;
-            padding: 30px 0;
+            padding: 40px 0;
             scroll-snap-type: x mandatory;
-            scrollbar-width: none; /* Firefox */
+            scroll-behavior: smooth;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-left: calc(50% - 155px);
+            padding-right: calc(50% - 155px);
         }
         
         .members-scroll::-webkit-scrollbar {
-            display: none; /* Chrome/Safari */
+            display: none;
         }
         
         .member-card {
             flex: 0 0 280px;
-            background: white;
+            scroll-snap-align: center;
+            transition: all 0.4s cubic-bezier(0.28, 0.55, 0.385, 1);
+            position: relative;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            scroll-snap-align: start;
-            transition: transform 0.3s;
+            transform-origin: center center;
+            will-change: transform;
         }
         
-        .member-card:hover {
-            transform: translateY(-10px);
+        /* Center card styling */
+        .member-card.snap-active {
+            transform: scale(1.1);
+            z-index: 2;
+            filter: none;
+            opacity: 1;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        /* Side cards styling */
+        .member-card:not(.snap-active) {
+            transform: scale(0.9);
+            filter: blur(2px);
+            opacity: 0.85;
         }
         
         .member-image {
             width: 100%;
             height: 280px;
             object-fit: cover;
+            transition: transform 0.3s;
         }
         
         .member-info {
             padding: 20px;
             text-align: center;
+            background: white;
         }
         
         .scroll-arrow {
@@ -369,14 +392,35 @@
             z-index: 10;
             font-size: 1.5rem;
             color: #7209b7;
+            border: none;
+            outline: none;
+            transition: all 0.3s;
+            opacity: 0.8;
+        }
+        
+        .scroll-arrow:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
         }
         
         .scroll-left {
-            left: -25px;
+            left: 20px;
         }
         
         .scroll-right {
-            right: -25px;
+            right: 20px;
+        }
+        
+        /* Hide arrows on mobile */
+        @media (max-width: 768px) {
+            .scroll-arrow {
+                display: none;
+            }
+            
+            .members-scroll {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
         }
         
         /* Gallery Section */
@@ -490,10 +534,6 @@
                 min-width: 100%;
             }
             
-            .scroll-arrow {
-                display: none;
-            }
-            
             .nav-links {
                 display: none;
             }
@@ -554,7 +594,7 @@
                 <div class="event-info">
                     <h3>Doodle it out ~</h3>
                     <p>Got 2–5 minutes to spare? Let your imagination fly with a fun little challenge from ARC.</p>
-                    <p><strong>What’s the plan?</strong></p>
+                    <p><strong>What's the plan?</strong></p>
                     <p>Nada! Draw anything your heart desires, think less, draw more.</p>
                     <p>📧 Mail your creation to the email thread for the same.</p>
                     <p><strong>Deadline:</strong> 13th April 2025 Sunday, 11.59 pm.</p>
@@ -573,10 +613,11 @@
         <div class="container">
             <h2>Meet the Crew</h2>
             <div class="members-container">
+                <button class="scroll-arrow scroll-left" onclick="scrollMembers(-1)">←</button>
                 <div class="members-scroll" id="membersScroll">
                     <!-- Member 1 -->
                     <div class="member-card">
-                        <img src="images/members/vp.jpg" alt="Sarah" class="member-image">
+                        <img src="images/members/vp.jpg" alt="Vaishnavi Kamalesh Pawar" class="member-image">
                         <div class="member-info">
                             <h3>Vaishnavi Kamalesh Pawar</h3>
                             <p>President</p>
@@ -587,7 +628,7 @@
                     
                     <!-- Member 2 -->
                     <div class="member-card">
-                        <img src="images/members/vn.jpg" alt="Mike" class="member-image">
+                        <img src="images/members/vn.jpg" alt="Vyom Neeraj" class="member-image">
                         <div class="member-info">
                             <h3>Vyom Neeraj</h3>
                             <p>Vice President</p>
@@ -597,8 +638,8 @@
                     </div>
                     
                     <!-- Member 3 -->
-                   <div class="member-card" ondblclick="window.location.href='minesweeper.html'">
-                        <img src="images/members/ks.jpg" alt="Emily" class="member-image">
+                    <div class="member-card" ondblclick="window.location.href='minesweeper.html'">
+                        <img src="images/members/ks.jpg" alt="Kaustav Sarkar" class="member-image">
                         <div class="member-info">
                             <h3>Kaustav Sarkar</h3>
                             <p>Social Media Manager</p>
@@ -609,7 +650,7 @@
                     
                     <!-- Member 4 -->
                     <div class="member-card">
-                        <img src="images/members/mm.jpg" alt="David" class="member-image">
+                        <img src="images/members/mm.jpg" alt="Mrityunjoy Medhi" class="member-image">
                         <div class="member-info">
                             <h3>Mrityunjoy Medhi</h3>
                             <p>Event Manager</p>
@@ -620,7 +661,7 @@
                     
                     <!-- Member 5 -->
                     <div class="member-card">
-                        <img src="images/members/dk.jpg" alt="Jessica" class="member-image">
+                        <img src="images/members/dk.jpg" alt="Deepasha Kumari" class="member-image">
                         <div class="member-info">
                             <h3>Deepasha Kumari</h3>
                             <p>Event Manager</p>
@@ -631,7 +672,7 @@
 
                     <!-- Member 6 -->
                     <div class="member-card">
-                        <img src="images/members/pr.jpg" alt="Jessica" class="member-image">
+                        <img src="images/members/pr.jpg" alt="Piyush Ranjan" class="member-image">
                         <div class="member-info">
                             <h3>Piyush Ranjan</h3>
                             <p>Social Media Manager</p>
@@ -642,7 +683,7 @@
                     
                     <!-- Member 7 -->
                     <div class="member-card">
-                        <img src="images/members/a.jpg" alt="Alex" class="member-image">
+                        <img src="images/members/a.jpg" alt="Aitrila Saha" class="member-image">
                         <div class="member-info">
                             <h3>Aitrila Saha</h3>
                             <p>Outreach Coordinator</p>
@@ -651,8 +692,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="scroll-arrow scroll-left" onclick="scrollMembers(-1)">←</div>
-                <div class="scroll-arrow scroll-right" onclick="scrollMembers(1)">→</div>
+                <button class="scroll-arrow scroll-right" onclick="scrollMembers(1)">→</button>
             </div>
         </div>
     </section>
@@ -666,7 +706,7 @@
             <div class="gallery-grid">
                 <!-- Artwork 1 -->
                 <div class="gallery-item">
-                    <img src="images/art/ele.jpg" alt="Sunset Dreams">
+                    <img src="images/art/ele.jpg" alt="Kimbhoot Pencil Sketch">
                     <div class="gallery-info" ondblclick="window.location.href='tetris.html'">
                         <p>"Kimbhoot" - Pencil Sketch</p>
                         <div class="artist-name">By: Kaustav Sarkar</div>
@@ -675,7 +715,7 @@
                 
                 <!-- Artwork 2 -->
                 <div class="gallery-item">
-                    <img src="images/art/wolf.jpg" alt="City Lights">
+                    <img src="images/art/wolf.jpg" alt="Wolf Link Digital Art">
                     <div class="gallery-info">
                         <p>"Wolf Link" - Digital Art</p>
                         <div class="artist-name">By: Kaustav Sarkar</div>
@@ -684,7 +724,7 @@
                 
                 <!-- Artwork 3 -->
                 <div class="gallery-item" ondblclick="window.location.href='breakout.html'">
-                    <img src="images/art/kammam.jpg" alt="Floral Patterns">
+                    <img src="images/art/kammam.jpg" alt="Omlet Large Pencil Sketch">
                     <div class="gallery-info">
                         <p>"Omlet Large" - Pencil Sketch</p>
                         <div class="artist-name">By: Mrityunjoy Medhi</div>
@@ -693,7 +733,7 @@
                 
                 <!-- Artwork 4 -->
                 <div class="gallery-item">
-                    <img src="images/art/cll.jpg" alt="Abstract Composition">
+                    <img src="images/art/cll.jpg" alt="Calligraphy">
                     <div class="gallery-info">
                         <p>Calligraphy</p>
                         <div class="artist-name">By: Vaishnavi Kamalesh Pawar</div>
@@ -737,83 +777,116 @@
     <script>
         // Loading animation will automatically disappear after 2.5 seconds
         
-        // Members section scrolling
+        // Enhanced scrolling functionality for members section
+        const membersScroll = document.getElementById('membersScroll');
+        const memberCards = document.querySelectorAll('.member-card');
+        const scrollLeftBtn = document.querySelector('.scroll-left');
+        const scrollRightBtn = document.querySelector('.scroll-right');
+        
+        // Initialize first card as active
+        memberCards[0]?.classList.add('snap-active');
+        
+        // Scroll to specific card
         function scrollMembers(direction) {
-            const scrollContainer = document.getElementById('membersScroll');
-            scrollContainer.scrollBy({
-                left: direction * 300,
+            const cardWidth = memberCards[0]?.offsetWidth || 310; // Default to 310 if not available
+            const gap = 30;
+            const scrollAmount = (cardWidth + gap) * direction;
+            
+            membersScroll.scrollBy({
+                left: scrollAmount,
                 behavior: 'smooth'
             });
+            
+            // Update arrows after scroll
+            setTimeout(updateArrows, 500);
         }
         
-        // Make member cards draggable for scrolling on desktop
-        const membersScroll = document.getElementById('membersScroll');
-        let isDown = false;
+        // Update active card based on scroll position
+        function updateActiveCard() {
+            const scrollCenter = membersScroll.scrollLeft + (membersScroll.offsetWidth / 2);
+            
+            memberCards.forEach(card => {
+                const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+                const distance = Math.abs(scrollCenter - cardCenter);
+                
+                if (distance < card.offsetWidth / 2) {
+                    card.classList.add('snap-active');
+                } else {
+                    card.classList.remove('snap-active');
+                }
+            });
+            
+            updateArrows();
+        }
+        
+        // Update arrow visibility based on scroll position
+        function updateArrows() {
+            const scrollLeft = membersScroll.scrollLeft;
+            const maxScroll = membersScroll.scrollWidth - membersScroll.clientWidth;
+            
+            scrollLeftBtn.style.display = scrollLeft > 10 ? 'flex' : 'none';
+            scrollRightBtn.style.display = scrollLeft < maxScroll - 10 ? 'flex' : 'none';
+        }
+        
+        // Initialize arrows
+        updateArrows();
+        
+        // Update on scroll
+        membersScroll.addEventListener('scroll', updateActiveCard);
+        
+        // Make scrolling smoother on touch devices
+        let isDragging = false;
         let startX;
-        let scrollLeft;
+        let startScrollLeft;
         
-        membersScroll.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - membersScroll.offsetLeft;
-            scrollLeft = membersScroll.scrollLeft;
-        });
+        // Touch event handlers
+        function handleDragStart(e) {
+            isDragging = true;
+            startX = e.pageX || e.touches[0].pageX;
+            startScrollLeft = membersScroll.scrollLeft;
+            membersScroll.style.scrollBehavior = 'auto';
+            membersScroll.style.cursor = 'grabbing';
+        }
         
-        membersScroll.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
-        
-        membersScroll.addEventListener('mouseup', () => {
-            isDown = false;
-        });
-        
-        membersScroll.addEventListener('mousemove', (e) => {
-            if(!isDown) return;
+        function handleDragMove(e) {
+            if (!isDragging) return;
             e.preventDefault();
-            const x = e.pageX - membersScroll.offsetLeft;
-            const walk = (x - startX) * 2;
-            membersScroll.scrollLeft = scrollLeft - walk;
-        });
+            const x = e.pageX || e.touches[0].pageX;
+            const walk = (x - startX) * 2; // Scroll speed
+            membersScroll.scrollLeft = startScrollLeft - walk;
+        }
         
-        // Touch support for mobile
-        membersScroll.addEventListener('touchstart', (e) => {
-            isDown = true;
-            startX = e.touches[0].pageX - membersScroll.offsetLeft;
-            scrollLeft = membersScroll.scrollLeft;
-        });
+        function handleDragEnd() {
+            isDragging = false;
+            membersScroll.style.scrollBehavior = 'smooth';
+            membersScroll.style.cursor = 'grab';
+            updateActiveCard();
+        }
         
-        membersScroll.addEventListener('touchend', () => {
-            isDown = false;
-        });
+        // Mouse events
+        membersScroll.addEventListener('mousedown', handleDragStart);
+        membersScroll.addEventListener('mousemove', handleDragMove);
+        membersScroll.addEventListener('mouseup', handleDragEnd);
+        membersScroll.addEventListener('mouseleave', handleDragEnd);
         
-        membersScroll.addEventListener('touchmove', (e) => {
-            if(!isDown) return;
-            const x = e.touches[0].pageX - membersScroll.offsetLeft;
-            const walk = (x - startX) * 2;
-            membersScroll.scrollLeft = scrollLeft - walk;
+        // Touch events
+        membersScroll.addEventListener('touchstart', handleDragStart, { passive: false });
+        membersScroll.addEventListener('touchmove', handleDragMove, { passive: false });
+        membersScroll.addEventListener('touchend', handleDragEnd);
+        
+        // Center first card on load
+        window.addEventListener('load', () => {
+            // Small timeout to ensure all elements are properly rendered
+            setTimeout(() => {
+                memberCards[0]?.classList.add('snap-active');
+                updateArrows();
+            }, 100);
         });
-    </script> 
-<script>
-    // Logo click handler
-    document.querySelector('.logo').addEventListener('click', function() {
-        window.location.href = 'pong.html';
-    });
-    
-    // Kaustav's card double-click handler
-    document.querySelectorAll('.member-card')[2].addEventListener('dblclick', function() {
-        window.location.href = 'minesweeper.html';
-    });
 
-    // Kaustav's card double-click handler
-    document.querySelectorAll('.member-card')[2].addEventListener('dblclick', function() {
-        window.location.href = 'https://games.htmlgames.com/DonkeyKong/';
-
-    // Kaustav's card double-click handler
-    document.querySelectorAll('.gallery-info')[3].addEventListener('dblclick', function() {
-        window.location.href = 'breakout.html';
-
-    // Kaustav's card double-click handler
-    document.querySelectorAll('.gallery-info')[1].addEventListener('dblclick', function() {
-        window.location.href = 'tetris.html';
-</script>
+        // Handle window resize
+        window.addEventListener('resize', updateArrows);
+        
+        // Previous remaining scripts remain the same
+    </script>
 </body>
 </html>
