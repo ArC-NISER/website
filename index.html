@@ -154,7 +154,7 @@
         /* Header Styles */
         header {
             background-color: #ffd166;
-            padding: 20px 0;
+            padding: 15px 0;
             position: fixed;
             width: 100%;
             top: 0;
@@ -168,10 +168,27 @@
             align-items: center;
         }
         
+        /* Updated Logo Styles */
         .logo {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2rem;
-            color: #7209b7;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #7209b7;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: 0 5px 15px rgba(114,9,183,0.4);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .nav-links {
@@ -411,18 +428,6 @@
             right: 20px;
         }
         
-        /* Hide arrows on mobile */
-        @media (max-width: 768px) {
-            .scroll-arrow {
-                display: none;
-            }
-            
-            .members-scroll {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-        }
-        
         /* Gallery Section */
         .gallery {
             text-align: center;
@@ -537,6 +542,20 @@
             .nav-links {
                 display: none;
             }
+            
+            .scroll-arrow {
+                display: none;
+            }
+            
+            .members-scroll {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
 </head>
@@ -553,6 +572,24 @@
         <div class="rainbow-strip"></div>
     </div>
 </div>
+
+    <!-- Header with Circular Logo -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" onclick="window.location.href='pong.html'">
+                    <img src="images/logo/arc.jpg" alt="Arts Club Logo">
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#bulletin">Bulletin</a></li>
+                    <li><a href="#members">Core</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -745,22 +782,6 @@
         </div>
     </section>
 
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo" onclick="window.location.href='pong.html'">ArC</div>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#bulletin">Bulletin</a></li>
-                    <li><a href="#members">Core</a></li>
-                    <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
     <!-- Footer -->
     <footer id="contact">
         <div class="container" ondblclick="window.location.href='https://games.htmlgames.com/DonkeyKong/'">
@@ -885,8 +906,6 @@
 
         // Handle window resize
         window.addEventListener('resize', updateArrows);
-        
-        // Previous remaining scripts remain the same
     </script>
 </body>
 </html>
