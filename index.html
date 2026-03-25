@@ -6,7 +6,6 @@
     <title>Arts Club NISER</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
-        /* ===== Global ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-image: url('images/logo/peakpx.webp');
@@ -41,7 +40,6 @@
         h3 { font-size: 1.8rem; color: #7209b7; }
         p { font-size: 1.2rem; margin-bottom: 20px; }
 
-        /* ===== Header ===== */
         header {
             background-color: #ffd166;
             padding: 15px 0;
@@ -81,7 +79,6 @@
         }
         .nav-links a:hover { background-color: #ff9e4f; color: white; }
 
-        /* ===== Hero ===== */
         .hero {
             background: linear-gradient(135deg, #ff9e4f, #ff6b6b, #7209b7);
             padding: 150px 0 100px;
@@ -93,7 +90,6 @@
         .hero h1 { color: white; font-size: 4rem; margin-bottom: 30px; }
         .hero p { font-size: 1.5rem; max-width: 800px; margin: 0 auto 40px; }
 
-        /* ===== Bulletin ===== */
         .bulletin-board {
             background-color: #e2f3f8;
             border: 15px solid #c9cbff;
@@ -121,7 +117,6 @@
             border-left: 5px solid #7209b7;
         }
 
-        /* ===== Next Event ===== */
         .next-event {
             background-color: white;
             border-radius: 15px;
@@ -135,7 +130,6 @@
         .event-image img { width: 100%; transition: transform 0.5s; }
         .event-image:hover img { transform: scale(1.05); }
 
-        /* ===== Members (Core) ===== */
         .members-section { background-color: #f0f7ff; padding: 60px 0; overflow: hidden; }
         .members-container { position: relative; width: 100%; padding: 40px 0; }
         .members-scroll {
@@ -178,7 +172,6 @@
         .scroll-left { left: 20px; }
         .scroll-right { right: 20px; }
 
-        /* Previous Core Button */
         .secondary-btn {
             display: inline-block;
             margin: 40px auto 0;
@@ -194,7 +187,6 @@
         }
         .secondary-btn:hover { transform: translateY(-5px); }
 
-        /* ===== Gallery ===== */
         .gallery { text-align: center; }
         .gallery-grid {
             display: grid;
@@ -229,7 +221,6 @@
         }
         .gallery-btn:hover { transform: translateY(-5px); }
 
-        /* ===== Footer ===== */
         footer {
             background-color: #7209b7;
             color: white;
@@ -241,7 +232,6 @@
         .social-links { margin-top: 30px; }
         .social-links a { color: white; margin: 0 15px; font-size: 1.5rem; text-decoration: none; }
 
-        /* ===== Responsive ===== */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             h2 { font-size: 2rem; }
@@ -255,7 +245,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
             <nav>
@@ -273,7 +262,6 @@
         </div>
     </header>
 
-    <!-- Hero -->
     <section class="hero" id="home">
         <div class="container1">
             <h1>NISER Arts Club</h1>
@@ -281,14 +269,13 @@
         </div>
     </section>
 
-    <!-- Bulletin -->
     <section class="bulletin-board" id="bulletin">
         <div class="container">
             <h2>Club Bulletin</h2>
             <div class="bulletin-item">
-                <h3>Valentine's Day Event</h3>
+                <h3>New Core Incoming!</h3>
                 <p>Scroll down for more details.</p>
-                <p><strong>When:</strong> 14th February</p>
+                <p><strong>When:</strong> From today</p>
             </div>
             <div class="bulletin-item">
                 <h3>Fun fact</h3>
@@ -302,36 +289,35 @@
         </div>
     </section>
 
-    <!-- Next Event -->
     <section class="next-event">
         <div class="container">
-            <h2>Valentine's Day Event</h2>
+            <h2>Ne Core</h2>
             <div class="event">
                 <div class="event-info">
-                    <h3>Kuch Rang Pyaar Ke</h3>
-                    <p>Love is in the air and arts club is planning to paint it all shades of red.</p>
-                    <p><strong>What's the plan?</strong></p>
-                    <p>The plan's to capture the essence of love through art.</p>
-                    <p><strong>Info:</strong> Coloring with your partner.</p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGeqV4hrnuLaJthXrvGWWTaWRE-FgnFyjwC37NpWjmwYmpsQ/viewform">REGISTER NOW!</a>
-                    <p><strong>14 Feb, 6pm-8pm, LH4</strong></p>
+                    <h3>Core 26-27</h3>
+                    <p><strong>Say welcome to the new core!</strong></p>
+                    <p><strong>Club Head:</strong> Kaustav Sarkar</p>
+                    <p><strong>Secretary:</strong> Mrityunjoy Medhi</p>
+                    <p><strong>Event Coordinator:</strong> Arya Niyogi</p>
+                    <p><strong>Event Coordinator:</strong> Joshna Anna Sam</p>
+                    <p><strong>Media & Content Coordinator:</strong> Vedant Sharma</p>
+                    <p><strong>Treasurer:</strong> Soubhagya Dutta</p>
+                    <p><strong>Outreach Coordinator:</strong> Sanskar Mahendra Naik</p>
                     <p>For any clarification, you can contact us on either our mail or insta or don't.</p>
                 </div>
-                <div class="event-image">
-                    <img src="images/logo/KRPK.webp" alt="Community Mural Project">
-                </div>
+                <!div class="event-image">
+                    <!img src="images/logo/KRPK.webp" alt="Community Mural Project">
+                <!/div>
             </div>
         </div>
     </section>
 
-    <!-- Core Members -->
     <section class="members-section" id="members">
         <div class="container">
             <h2>Meet the Crew</h2>
             <div class="members-container">
                 <button class="scroll-arrow scroll-left" onclick="scrollMembers(-1)">←</button>
                 <div class="members-scroll" id="membersScroll">
-                    <!-- Cards unchanged from original for brevity -->
                     <div class="member-card"><img src="images/members/sc.webp" class="member-image"><div class="member-info"><h3>Dr Subhasis Chattopadhyay</h3><p>Faculty In Charge (FIC)</p></div></div>
                     <div class="member-card"><img src="images/members/vp.webp" class="member-image"><div class="member-info"><h3>Vaishnavi Kamalesh Pawar</h3><p>President</p><p>Batch '23</p><a href="https://www.instagram.com/vaish9vi.kp/">📷 Instagram</a></div></div>
                     <div class="member-card"><img src="images/members/vn.webp" class="member-image"><div class="member-info"><h3>Vyom Neeraj</h3><p>Vice President</p><p>Batch '23</p><a href="https://www.instagram.com/vyomneeraj/">📷 Instagram</a></div></div>
@@ -350,9 +336,6 @@
         </div>
     </section>
 
-    
-
-    <!-- Footer -->
     <footer id="contact">
         <div class="container1" ondblclick="window.location.href='https://games.htmlgames.com/DonkeyKong/'">
             <h2>Get In Touch</h2>
