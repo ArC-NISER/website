@@ -6,7 +6,6 @@
 <title>Arts Club — Gallery</title>
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-/* ===== Base (aligned to index.html) ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   background-image:url('images/logo/peakpx.webp');
@@ -24,7 +23,6 @@ h1,h2,h3{font-family:'Fredoka One',cursive;text-align:center}
 h1{font-size:3rem;color:#ff9e4f;text-shadow:3px 3px 0 #ffd166;margin-top:90px}
 h2{font-size:2.4rem;color:#4cc9f0}
 
-/* ===== Header (matches index) ===== */
 header{
   background:#ffd166;
   padding:15px 0;
@@ -40,12 +38,10 @@ nav{display:flex;justify-content:space-between;align-items:center}
 .nav-links a{color:#333;text-decoration:none;font-weight:bold;padding:5px 10px;border-radius:20px;transition:.3s}
 .nav-links a:hover{background:#ff9e4f;color:white}
 
-/* ===== Back button ===== */
 .back-btn{display:inline-block;margin:20px 0 30px;padding:12px 22px;
   background:linear-gradient(45deg,#4cc9f0,#7209b7);color:white;
   text-decoration:none;border-radius:30px;font-weight:bold;}
 
-/* ===== Clean Gallery Grid ===== */
 .gallery-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
@@ -63,7 +59,6 @@ nav{display:flex;justify-content:space-between;align-items:center}
 .gallery-info{padding:12px}
 .artist-name{font-weight:bold;color:#ff6b6b;margin-top:6px}
 
-/* ===== Lightweight Preview (fast) ===== */
 .preview-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.85);
   display:none;align-items:center;justify-content:center;z-index:2000;
@@ -84,12 +79,10 @@ nav{display:flex;justify-content:space-between;align-items:center}
 .prev-btn{left:15px}
 .next-btn{right:15px}
 
-/* ===== Footer (matches index) ===== */
 footer{background:#7209b7;color:white;padding:50px 0;text-align:center;margin-top:60px}
 .social-links{margin-top:20px}
 .social-links a{color:white;margin:0 12px;font-size:1.4rem;text-decoration:none}
 
-/* ===== Responsive ===== */
 @media (max-width:768px){
   h1{font-size:2.4rem}
   h2{font-size:2rem}
@@ -124,7 +117,6 @@ footer{background:#7209b7;color:white;padding:50px 0;text-align:center;margin-to
     <p style="text-align:center">Explore our collection of artwork from members past and present.</p>
 
     <div class="gallery-grid" id="galleryGrid">
-      <!-- Items injected via JS for speed & cleanliness -->
     </div>
   </div>
 </section>
@@ -150,7 +142,6 @@ footer{background:#7209b7;color:white;padding:50px 0;text-align:center;margin-to
 </footer>
 
 <script>
-// === FAST DATA-DRIVEN GALLERY (clean + performant) ===
 const items = [
   {src:'images/art/ele.webp', title:'Kimbhut — Pencil Sketch', artist:'Kaustav Sarkar'},
   {src:'images/art/mm.webp', title:"Majora's Mask — Mesh", artist:'Kaustav Sarkar'},
@@ -252,10 +243,8 @@ function navigate(dir){
   img.src = items[current].src;
 }
 
-// Close when clicking backdrop
 overlay.addEventListener('click',e=>{ if(e.target===overlay) closePreview(); });
 
-// Keyboard support
 window.addEventListener('keydown',e=>{
   if(!overlay.classList.contains('active')) return;
   if(e.key==='Escape') closePreview();
